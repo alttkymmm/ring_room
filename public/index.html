@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bell Notification</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <button id="bellButton">Ring Bell</button>
+    <script>
+        const socket = io();
+        
+        // URLのパラメータからルーム名を取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const room = urlParams.get('room') || 'default';
+        
+        // ルームに参加
+        socket.emit('joinRoom', room);
+
+        document.getElementById('bellButton').addEventListener('click', () => {
+            socket.emit('bell', room);
+        });
+
+        socket.on('bell', () => {
+            alert('Bell rang!');
+        });
+    </script>
+</body>
+</html>
